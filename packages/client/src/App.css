@@ -1,0 +1,28 @@
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.app h1 {
+  font-size: 20px;
+}
+
+.chat-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.chat-panel > * {
+  flex: 1;
+  min-height: 0;
+}

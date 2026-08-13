@@ -1,0 +1,17 @@
+{
+  "name": "my-ai-robot",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.8.0",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "dev:server": "pnpm --filter @my-ai-robot/server dev",
+    "dev:client": "pnpm --filter @my-ai-robot/client dev",
+    "build:server": "pnpm --filter @my-ai-robot/server build",
+    "build:client": "pnpm --filter @my-ai-robot/client build"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
