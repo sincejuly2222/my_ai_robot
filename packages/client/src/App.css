@@ -1,14 +1,57 @@
-.app {
-  max-width: 800px;
-  margin: 0 auto;
+/* 整体布局壳 */
+.app-layout {
   height: 100vh;
+}
+
+.logo {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.app-header {
+  background: #fff;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.app-content {
+  padding: 24px;
+  overflow: auto;
+}
+
+/* 首页 */
+.home-page {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* 用户列表页工具栏 */
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* 聊天页 */
+.chat-page {
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 24px;
 }
 
-.app h1 {
+.chat-page h1 {
   font-size: 20px;
 }
 

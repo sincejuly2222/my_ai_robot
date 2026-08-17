@@ -1,94 +1,55 @@
-import { useRef, useState } from "react";
-import { Bubble, Sender } from "@ant-design/x";
-import type { BubbleItemType } from "@ant-design/x";
-import { RobotOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar } from "antd";
-import type { ChatMessage } from "@my-ai-robot/shared";
-import { sendChatStream } from "./api/chat";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
+import { Layout, Menu } from "antd";
+import { HomeOutlined, RobotOutlined, TeamOutlined } from "@ant-design/icons";
+import HomePage from "./pages/HomePage";
+import ChatPage from "./pages/ChatPage";
+import TablePage from "./pages/TablePage";
 import "./App.css";
 
+const { Sider, Header, Content } = Layout;
+
+const navItems = [
+  { path: "/", label: "首页", icon: <HomeOutlined /> },
+  { path: "/chat", label: "聊天", icon: <RobotOutlined /> },
+  { path: "/table", label: "用户管理", icon: <TeamOutlined /> },
+];
+
 export default function App() {
-  const [items, setItems] = useState<BubbleItemType[]>([]);
-  const [loading, setLoading] = useState(false);
-  // 手动维护多轮对话上下文，传给后端
-  const historyRef = useRef<ChatMessage[]>([]);
-  const idRef = useRef(0);
+  const location = useLocation();
+  const current =
+    navItems.find((item) => item.path === location.pathname) ?? navItems[0];
 
-  async function handleSubmit(text: string) {
-    const content = text.trim();
-    if (!content || loading) return;
-
-    const userMessage: ChatMessage = { role: "user", content };
-    const userKey = idRef.current++;
-    const aiKey = idRef.current++;
-
-    setItems((prev) => [
-      ...prev,
-      { key: userKey, role: "user", content },
-      { key: aiKey, role: "ai", content: "", loading: true },
-    ]);
-    setLoading(true);
-
-    const requestMessages = [...historyRef.current, userMessage];
-    let full = "";
-
-    try {
-      await sendChatStream(requestMessages, (chunk) => {
-        full += chunk;
-        setItems((prev) =>
-          prev.map((item) =>
-            item.key === aiKey
-              ? { ...item, content: full, loading: false }
-              : item
-          )
-        );
-      });
-      historyRef.current = [
-        ...requestMessages,
-        { role: "assistant", content: full },
-      ];
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "请求失败";
-      setItems((prev) =>
-        prev.map((item) =>
-          item.key === aiKey
-            ? { ...item, content: `⚠️ ${message}`, loading: false }
-            : item
-        )
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
+  const menuItems = navItems.map((item) => ({
+    key: item.path,
+    icon: item.icon,
+    label: <Link to={item.path}>{item.label}</Link>,
+  }));
 
   return (
-    <div className="app">
-      <h1>🤖 my-ai-robot</h1>
-      <div className="chat-panel">
-        <Bubble.List
-          role={{
-            user: {
-              placement: "end",
-              avatar: (
-                <Avatar icon={<UserOutlined />} style={{ background: "#1677ff" }} />
-              ),
-            },
-            ai: {
-              placement: "start",
-              avatar: (
-                <Avatar icon={<RobotOutlined />} style={{ background: "#52c41a" }} />
-              ),
-            },
-          }}
-          items={items}
-          autoScroll
+    <Layout className="app-layout">
+      <Sider breakpoint="lg" collapsedWidth="0">
+        <div className="logo">🤖 my-ai-robot</div>
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[current.path]}
+          items={menuItems}
         />
-      </div>
-      <Sender
-        loading={loading}
-        onSubmit={handleSubmit}
-        placeholder="输入消息，按回车发送…"
-      />
-    </div>
+      </Sider>
+      <Layout>
+        <Header className="app-header">
+          <span>{current.label}</span>
+        </Header>
+        <Content className="app-content">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/table" element={<TablePage />} />
+            {/* 未匹配的路径回退到首页 */}
+            <Route path="*" element={<HomePage />} />
+          </Routes>
+        </Content>
+      </Layout>
+    </Layout>
   );
 }

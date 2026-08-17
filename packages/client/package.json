@@ -13,8 +13,10 @@
     "@ant-design/x": "^2.9.0",
     "@my-ai-robot/shared": "workspace:*",
     "antd": "^6.6.0",
+    "dayjs": "^1.11.23",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

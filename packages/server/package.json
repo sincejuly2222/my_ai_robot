@@ -15,7 +15,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^5.0.1",
-    "langchain": "^1.0.0"
+    "langchain": "^1.0.0",
+    "mysql2": "^3.23.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
